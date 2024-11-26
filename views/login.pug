@@ -1,0 +1,29 @@
+doctype html
+html(lang="es")
+  head
+    title Login
+    link(rel='stylesheet', href='/styles/styles.css')
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+
+  body
+    p Para ingresar como administrador hacerlo con el usuario "admin"/"admin".
+    p Para probar las opciones de docente ingresar con "4444"/"4444".
+    p Para probar las opciones de estudiante ingresar con "9999"/"9999".   
+    h1 Iniciar sesión
+    if error
+      p(style="color: red") #{error}
+    form(action="/" method="POST" id="login-form")
+      label(for="nombre") DNI / Usuario:
+      input(type="text" name="nombre" value="admin" required)
+      br
+      label(for="password") Contraseña:
+      input(type="password" name="password" value="admin" required)
+      br
+      div(style="display: flex; flex-direction: row; align-items: strech")
+        label(for="rememberMe") Recordarme&nbsp 
+        input(type="checkbox" name="rememberMe")
+      br
+      button(type="submit") Iniciar sesión
+
+<!--TODO: después remover los valores "admin" -->

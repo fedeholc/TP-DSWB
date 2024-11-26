@@ -1,0 +1,44 @@
+doctype html
+html(lang="es")
+  head
+    title Editar notas del curso
+    link(rel='stylesheet', href='/styles/styles.css')
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+
+  body
+    if error
+      p(style="color: red") #{error}
+    if success
+      p(style="color: green") #{success}
+    h1 Curso: #{curso.nombre}
+ 
+    div(style="border: 1px solid grey; padding: 1rem; margin: 1rem; min-width: 600px") 
+      div
+        details(open)
+          summary Docentes:
+          if curso.docentes
+            ul
+            each docente in curso.docentes
+              li #{docente.nombre} (#{docente.dni})
+          else
+            p No tiene docentes asignados
+      br
+      div
+        details(open)
+          summary Estudiantes:
+          if curso.estudiantes
+            form(action="/curso/editar/"+curso._id id="form-editar-notas" method="POST")
+              each estudiante in curso.estudiantes
+                p Nombre:  #{estudiante.estudiante.nombre}
+                p Calificacion: 
+                input(type="number" name="calificacion" min=0 max=10 value=estudiante.calificacion)
+                input(type="hidden" name="estudianteId" value=estudiante.estudiante._id)
+                br
+              button(type="submit") Guardar
+              
+          else
+            p No tiene estudiantes asignados
+      br
+    a(href="/") Volver al inicio
+    br        

@@ -1,0 +1,87 @@
+doctype html
+html(lang="es")
+  head
+    title Alta de Curso
+    link(rel='stylesheet', href='/styles/styles.css')
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+
+
+    script.
+      // Función para filtrar docentes
+      function filtrarDocentes() {
+        const filtro = document.getElementById('filtroDocentes').value.toLowerCase();
+        const docentes = document.querySelectorAll('.docente-item');
+        
+        docentes.forEach(function(docente) {
+          const nombreDocente = docente.querySelector('label').innerText.toLowerCase();
+          if (nombreDocente.includes(filtro)) {
+            docente.style.display = 'block';
+          } else {
+            docente.style.display = 'none';
+          }
+        });
+      }
+
+      // Función para filtrar estudiantes
+      function filtrarEstudiantes() {
+        const filtro = document.getElementById('filtroEstudiantes').value.toLowerCase();
+        const estudiantes = document.querySelectorAll('.estudiante-item');
+        
+        estudiantes.forEach(function(estudiante) {
+          const nombreEstudiante = estudiante.querySelector('label').innerText.toLowerCase();
+          if (nombreEstudiante.includes(filtro)) {
+            estudiante.style.display = 'block';
+          } else {
+            estudiante.style.display = 'none';
+          }
+        });
+      }
+
+  body
+    h1 Alta de Curso
+    if error
+      p(style="color: red") #{error}
+    else
+      if success
+        p(style="color: green") #{success}
+      else
+        form(action="/curso/nuevo" method="POST")
+          //- Nombre del curso
+          label(for="nombre") Nombre del Curso:
+          input(type="text" name="nombre" required)
+
+          //- Validación para mostrar el filtro de docentes solo si existen
+          if docentes
+            label(for="filtroDocentes") Filtrar Docentes:
+            input(type="text" id="filtroDocentes" oninput="filtrarDocentes()" placeholder="Buscar por nombre")
+            
+            //- Selección de docentes
+            p Seleccionar Docentes:
+            div.lista-checks.mb1
+              each docente in docentes
+                div.docente-item
+                  input(type="checkbox" name="docentes" value=docente._id id=docente._id)
+                  label(for=docente._id) #{docente.nombre}
+          else
+            p No hay docentes disponibles.
+
+          //- Validación para mostrar el filtro de estudiantes solo si existen
+          if estudiantes
+            label(for="filtroEstudiantes") Filtrar Estudiantes:
+            input(type="text" id="filtroEstudiantes" oninput="filtrarEstudiantes()" placeholder="Buscar por nombre")
+            
+            //- Selección de estudiantes
+            p Seleccionar Estudiantes:
+            div.lista-checks.mb1
+              each estudiante in estudiantes
+                div.estudiante-item
+                  input(type="checkbox" name="estudiantes" value=estudiante._id id=estudiante._id)
+                  label(for=estudiante._id) #{estudiante.nombre}
+          else
+            p No hay estudiantes disponibles.
+
+          button(type="submit") Guardar Curso
+  br
+  a(href="/") Volver al inicio
+  br

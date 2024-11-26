@@ -1,0 +1,59 @@
+doctype html
+html(lang="es")
+  head
+    title Menú de inicio
+    link(rel='stylesheet', href='/styles/styles.css')
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+
+
+  body
+    h1 Menú de inicio
+    h2 Usuario: #{usuario.nombre} - Rol: #{usuario.rol.nombre}
+    if usuario.rol.nombre == 'administrador'
+      a(href="/docente/nuevo") Alta de docente
+      a(href="/docente/lista") Listado de docentes
+      a(href="/estudiante/nuevo") Alta de estudiante
+      a(href="/curso/nuevo") Alta de curso
+      a(href="/curso/lista") Listado de cursos
+    
+    if usuario.rol.nombre == 'docente'
+      if cursos 
+        each curso in cursos
+          - var cursoId = curso._id
+          div(style="border: 1px solid grey; padding: 1rem; margin: 1rem; min-width: 600px") 
+            h2 Curso: #{curso.nombre}
+            br
+            div
+              details
+                summary Docentes:
+                if curso.docentes
+                  ul
+                  each docente in curso.docentes
+                    li #{docente.nombre} (#{docente.dni})
+                else
+                  p No tiene docentes asignados
+            br
+            div
+              details
+                summary Estudiantes:
+                if curso.estudiantes
+                  each estudiante in curso.estudiantes
+                    p Nombre:  #{estudiante.estudiante.nombre}
+                    if estudiante.calificacion
+                      p Calificacion: #{estudiante.calificacion}
+                    else 
+                      p Calificacion: Sin calificar
+                else
+                  p No tiene estudiantes asignados
+            br
+            a(href="/curso/editar/"+ cursoId) Editar Notas      
+    
+    if usuario.rol.nombre == 'estudiante'
+      a(href="/estudiante/ver/"+usuario.estudiante) Ver cursos y notas
+  
+    br
+    a(href="/logout") Cerrar sesión
+      br
+    a(href="/") Volver al inicio
+    br
